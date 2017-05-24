@@ -1,0 +1,213 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/google-youtube/google-youtube.html">
+<link rel="import" href="../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-styles/classes/typography.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+
+
+<dom-module id="my-view2">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment iron-flex-factors iron-positioning"></style>
+    <style>
+      :host {
+        display: block;
+        min-height: 100vh;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        background-color: #141414;
+        font-family: "Roboto";
+        color: white;
+      }
+      #container{
+        width: 100%;
+        max-width: 1400px;
+      }
+      #container google-youtube{
+        width: 426px;
+        height: 240px;
+        margin: 8px;
+        box-sizing: border-box;
+        background-color: #212121;
+        pointer-events: none;
+      }
+      .large_video{
+        width: 960px !important;
+        height: 540px !important;
+        order: 3;
+      }
+      paper-button{
+        background-color: #212121;
+        color: white;
+        padding: 8px 16px;
+      }
+      #buttons{
+        margin-top: 16px;
+      }
+    </style>
+
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+
+    <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{tail}}"></app-route>
+
+    <iron-pages selected="[[page]]">
+      <section></section>
+      <section></section>
+      <section></section>
+    </iron-pages>
+
+    <iron-a11y-keys target="{{target}}" keys="space" on-keys-pressed="keyPressed"></iron-a11y-keys>
+
+    <div id="container" class="layout horizontal wrap center-justified">
+
+      <google-youtube
+        id="video1"
+        class="large_video"
+        volume="0"
+        controls="0"
+        video-id="Sa_Hj3EObcY"
+        width="100%"
+        height="100%"
+        currenttime="{{currentTime}}">
+      </google-youtube>
+      <google-youtube
+        id="video2"
+        volume="0"
+        controls="0"
+        video-id="7UjHdw_oDB4"
+        width="100%"
+        height="100%">
+      </google-youtube>
+      <google-youtube
+        id="video3"
+        volume="0"
+        controls="0"
+        video-id="937mTDgX0b8"
+        width="100%"
+        height="100%">
+      </google-youtube>
+      <google-youtube
+        id="video4"
+        volume="0"
+        controls="0"
+        video-id="CFLZF3GEaVE"
+        width="100%"
+        height="100%">
+      </google-youtube>
+
+    </div>
+
+    <div id="buttons" class="layout horizontal">
+      <paper-button id="camera1" raised class="paper-font-button" on-tap="_changeCamera">Camera 1</paper-button>
+      <paper-button id="camera2" raised class="paper-font-button" on-tap="_changeCamera">Camera 2</paper-button>
+      <paper-button id="camera3" raised class="paper-font-button" on-tap="_changeCamera">Camera 3</paper-button>
+      <paper-button id="camera4" raised class="paper-font-button" on-tap="_changeCamera">Camera 4</paper-button>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'my-view2',
+
+      properties: {
+        currentTime:{
+          type: Number,
+          value: 0,
+          observer: "_syncVideos"
+        },
+        isPlaying:{
+          type: Boolean,
+          value: true
+        }
+      },
+
+      attached: function() {
+        this.target = document;
+        this.initialLoad = true;
+      },
+
+      _syncVideos: function (value) {
+        this.$.video2.seekTo(value);
+        this.$.video3.seekTo(value);
+        this.$.video4.seekTo(value);
+      },
+
+      _changeCamera: function (e) {
+        var selectedCamera = e.target.id;
+
+        switch (selectedCamera) {
+          case "camera1":
+            this.toggleClass("large_video", true, this.$.video1);
+            this.toggleClass("large_video", false, this.$.video2);
+            this.toggleClass("large_video", false, this.$.video3);
+            this.toggleClass("large_video", false, this.$.video4);
+
+            this.$.video1.unMute();
+            this.$.video2.mute();
+            this.$.video3.mute();
+            this.$.video4.mute();
+            break;
+          case "camera2":
+            this.toggleClass("large_video", false, this.$.video1);
+            this.toggleClass("large_video", true, this.$.video2);
+            this.toggleClass("large_video", false, this.$.video3);
+            this.toggleClass("large_video", false, this.$.video4);
+
+            this.$.video1.mute();
+            this.$.video2.unMute();
+            this.$.video3.mute();
+            this.$.video4.mute();
+            break;
+          case "camera3":
+            this.toggleClass("large_video", false, this.$.video1);
+            this.toggleClass("large_video", false, this.$.video2);
+            this.toggleClass("large_video", true, this.$.video3);
+            this.toggleClass("large_video", false, this.$.video4);
+
+            this.$.video1.mute();
+            this.$.video2.mute();
+            this.$.video3.unMute();
+            this.$.video4.mute();
+            break;
+          case "camera4":
+            this.toggleClass("large_video", false, this.$.video1);
+            this.toggleClass("large_video", false, this.$.video2);
+            this.toggleClass("large_video", false, this.$.video3);
+            this.toggleClass("large_video", true, this.$.video4);
+
+            this.$.video1.mute();
+            this.$.video2.mute();
+            this.$.video3.mute();
+            this.$.video4.unMute();
+            break;
+        }
+      },
+      keyPressed: function () {
+        if (this.initialLoad) {
+          this.$.video1.unMute();
+          this.$.video2.mute();
+          this.$.video3.mute();
+          this.$.video4.mute();
+        }
+
+        if (this.isPlaying) {
+          this.$.video1.play();
+          this.$.video2.play();
+          this.$.video3.play();
+          this.$.video4.play();
+        } else {
+          this.$.video1.pause();
+          this.$.video2.pause();
+          this.$.video3.pause();
+          this.$.video4.pause();
+        }
+        this.isPlaying = !this.isPlaying;
+      }
+
+    });
+  </script>
+</dom-module>
