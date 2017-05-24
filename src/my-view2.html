@@ -7,7 +7,6 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
-
 <dom-module id="my-view2">
   <template>
     <style is="custom-style" include="iron-flex iron-flex-alignment iron-flex-factors iron-positioning"></style>
@@ -131,6 +130,9 @@
       },
 
       _syncVideos: function (value) {
+        this.$.video2.mute();
+        this.$.video3.mute();
+        this.$.video4.mute();
         this.$.video2.seekTo(value);
         this.$.video3.seekTo(value);
         this.$.video4.seekTo(value);
@@ -145,44 +147,24 @@
             this.toggleClass("large_video", false, this.$.video2);
             this.toggleClass("large_video", false, this.$.video3);
             this.toggleClass("large_video", false, this.$.video4);
-
-            this.$.video1.unMute();
-            this.$.video2.mute();
-            this.$.video3.mute();
-            this.$.video4.mute();
             break;
           case "camera2":
             this.toggleClass("large_video", false, this.$.video1);
             this.toggleClass("large_video", true, this.$.video2);
             this.toggleClass("large_video", false, this.$.video3);
             this.toggleClass("large_video", false, this.$.video4);
-
-            this.$.video1.mute();
-            this.$.video2.unMute();
-            this.$.video3.mute();
-            this.$.video4.mute();
             break;
           case "camera3":
             this.toggleClass("large_video", false, this.$.video1);
             this.toggleClass("large_video", false, this.$.video2);
             this.toggleClass("large_video", true, this.$.video3);
             this.toggleClass("large_video", false, this.$.video4);
-
-            this.$.video1.mute();
-            this.$.video2.mute();
-            this.$.video3.unMute();
-            this.$.video4.mute();
             break;
           case "camera4":
             this.toggleClass("large_video", false, this.$.video1);
             this.toggleClass("large_video", false, this.$.video2);
             this.toggleClass("large_video", false, this.$.video3);
             this.toggleClass("large_video", true, this.$.video4);
-
-            this.$.video1.mute();
-            this.$.video2.mute();
-            this.$.video3.mute();
-            this.$.video4.unMute();
             break;
         }
       },
